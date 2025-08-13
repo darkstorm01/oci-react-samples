@@ -4,12 +4,11 @@ metadata:
   name: cloudbankdb
   namespace: cloudbank
 spec:
+  action: Update
   details:
-    autonomousDatabaseOCID: %ADB_OCID%
-    networkAccess:
-      accessType: RESTRICTED
-      accessControlList:
-      - 0.0.0.0/0
+    id: %ADB_OCID%
+    accessControlList:
+    - 0.0.0.0/0
   ociConfig:
     configMapName: oci-cred
     secretName: oci-privatekey
@@ -21,10 +20,10 @@ metadata:
   name: cloudbankdb
   namespace: cloudbank
 spec:
+  action: Update
   details:
-    autonomousDatabaseOCID: %ADB_OCID%
-    networkAccess:
-      isMTLSConnectionRequired: false
+    id: %ADB_OCID%
+    isMTLSConnectionRequired: false
   ociConfig:
     configMapName: oci-cred
     secretName: oci-privatekey
