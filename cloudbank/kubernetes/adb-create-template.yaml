@@ -4,11 +4,13 @@ metadata:
   name: cloudbankdb
   namespace: cloudbank
 spec:
+  action: Create
   details:
-    compartmentOCID: %ADB_COMPARTMENT%
+    compartmentId: %ADB_COMPARTMENT%
     dbName: %ADB_NAME%
     displayName: %ADB_DISPLAY_NAME%
-    cpuCoreCount: 1
+    computeModel: ECPU
+    computeCount: 1
     adminPassword:
       k8sSecret:
         name: admin-password

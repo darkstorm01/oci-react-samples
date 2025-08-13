@@ -8,7 +8,7 @@ STATE_LOCATION=$CB_STATE_DIR/state.json
 echo -n "Retreiving Autonomous Database OCID..."
 ADBOCID="$(state_get .lab.ocid.adb)"
 
-OCID=$(kubectl get AutonomousDatabase/cloudbankdb -o jsonpath='{.spec.details.autonomousDatabaseOCID}')
+OCID=$(kubectl get AutonomousDatabase/cloudbankdb -o jsonpath='{.spec.details.id}')
 if [ -z $OCID ]; then
   echo "Error: AutonomousDatabase OCID could not be retrieved."
   echo ""

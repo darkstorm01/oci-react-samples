@@ -4,13 +4,14 @@ metadata:
   name: cloudbankdb
   namespace: cloudbank
 spec:
+  action: Update
   details:
-    autonomousDatabaseOCID: %ADB_OCID%
-    wallet:
-      name: instance-wallet
-      password:
-        k8sSecret:
-          name: instance-wallet-password
+    id: %ADB_OCID%
+  wallet:
+    name: instance-wallet
+    password:
+      k8sSecret:
+        name: instance-wallet-password
   ociConfig:
     configMapName: oci-cred
     secretName: oci-privatekey
