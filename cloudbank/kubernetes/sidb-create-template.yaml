@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sidb-clone
+spec:
+  capacity:
+    storage: 1024Gi
+  accessModes:
+   - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  csi:
+    driver: blockvolume.csi.oraclecloud.com
+    volumeHandle: ocid1.volume.oc1.ap-hyderabad-1.abuhsljr3wuulymxwdjjgje2kfvyqjlsrbo6cm6k472ctc2uhcshxgyeyjca
+---
 apiVersion: database.oracle.com/v4
 kind: SingleInstanceDatabase
 metadata:
@@ -22,9 +36,11 @@ spec:
   ## Persistence is optional for prebuilt DB image
   ## if specified, the prebuilt DB datafiles are copied over to the persistant volume before DB startup
   persistence:
-   size: 50Gi
-   storageClass: "oci-bv"
+   size: 1024Gi
+   storageClass: ""
    accessMode: "ReadWriteOnce"
+   datafilesVolumeName: "sidb-clone"
+   setWritePermissions: true
 
   ## Count of Database Pods.
   replicas: 1

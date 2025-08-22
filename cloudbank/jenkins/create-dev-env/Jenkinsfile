@@ -77,11 +77,11 @@ pipeline {
                                 script {
                                     sh 'kubectl --type=merge -p \'{\"spec\":{\"loadBalancer\": true}}\' patch singleinstancedatabase $DATABASENAME'
                                 }
-                                withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
-                                    dir("$WORKSPACE/cloudbank/sql") {
-                                        sh('./configure-sidb.sh $DATABASENAME $PASSWORD')
-                                    }
-                                }
+                                // withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
+                                //     dir("$WORKSPACE/cloudbank/sql") {
+                                //         sh('./configure-sidb.sh $DATABASENAME $PASSWORD')
+                                //     }
+                                // }
                             }
                         }
                     }
