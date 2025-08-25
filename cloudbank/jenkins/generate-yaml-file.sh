@@ -15,9 +15,10 @@ mkdir -p $run_dir
 src=$kubernetes_dir/sidb-create-template.yaml
 dst=$run_dir/sidb-create.yaml
 name=$1
+volume_ocid=$2
 ns="cloudbank"
 admin_pwd_secret="sidb-admin-secret"
 
 # run task
 ls $task
-$task/generate-yaml-sidb-create.sh $src $dst $name $ns $admin_pwd_secret
+$task/generate-yaml-sidb-create.sh $src $dst $name $ns $admin_pwd_secret $volume_ocid

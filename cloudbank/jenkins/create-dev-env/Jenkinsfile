@@ -50,11 +50,23 @@ pipeline {
                     environment {
                         DATABASENAME="${params.ref_value.split("/")[1].toLowerCase()}"
                         BRANCH="${params.ref_value}"
+                        VOLUMEDISPLAYNAME="sidb-clone-${params.ref_value.split("/")[1].toLowerCase()}"
+                        SOURCEVOLUMEOCID=credentials("cbworkshop-source-volume-ocid")
                     }
                     steps {
                         dir("cloudbank/jenkins") {
+                            echo 'Cloning Block Volume'
+                            sh './create-volume.sh $VOLUMEDISPLAYNAME $SOURCEVOLUMEOCID'
+
+                            script{
+                                def props = readProperties file: 'volume.env'
+                                env.VOLUME_OCID = props['VOLUME_OCID']
+                                echo 'Volume created: ${env.VOLUME_OCID}'
+                            }
+                            
                             echo 'Generating database for branch $BRANCH'
-                            sh './generate-yaml-file.sh $DATABASENAME'
+                            sh './generate-yaml-file.sh $DATABASENAME ${env.VOLUME_OCID}'
+                            sh 'rm -f volume.env'
                         }
                         dir("$WORKSPACE/run") {
                             withKubeCredentials(kubectlCredentials: [[
