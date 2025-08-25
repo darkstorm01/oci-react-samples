@@ -52,6 +52,7 @@ pipeline {
                         BRANCH="${params.ref_value}"
                         VOLUMEDISPLAYNAME="sidb-clone-${params.ref_value.split("/")[1].toLowerCase()}"
                         SOURCEVOLUMEOCID=credentials("cbworkshop-source-volume-ocid")
+                        OCI_CLI_AUTH = "instance_principal"
                     }
                     steps {
                         dir("cloudbank/jenkins") {
