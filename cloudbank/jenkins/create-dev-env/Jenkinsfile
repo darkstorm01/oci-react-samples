@@ -62,11 +62,11 @@ pipeline {
                             script{
                                 def props = readProperties file: 'volume.env'
                                 env.VOLUME_OCID = props['VOLUME_OCID']
-                                echo 'Volume created: ${env.VOLUME_OCID}'
+                                echo 'Volume created'
                             }
                             
                             echo 'Generating database for branch $BRANCH'
-                            sh './generate-yaml-file.sh $DATABASENAME ${env.VOLUME_OCID}'
+                            sh "./generate-yaml-file.sh $DATABASENAME ${env.VOLUME_OCID}"
                             sh 'rm -f volume.env'
                         }
                         dir("$WORKSPACE/run") {
