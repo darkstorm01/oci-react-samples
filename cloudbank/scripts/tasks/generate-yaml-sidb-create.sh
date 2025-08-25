@@ -9,6 +9,7 @@ yaml_dst_location=$2
 sidb_name=$3
 sidb_namespace=$4
 sidb_admin_pwd=$5
+volume_ocid=$6
 
 # copy source into destination file
 cp $yaml_src_location $yaml_dst_location
@@ -24,3 +25,5 @@ mv -- /tmp/adb-wallet.yaml $yaml_dst_location
 sed -e "s|%SIDB_ADMIN_PWD_SECRET%|$sidb_admin_pwd|g" $yaml_dst_location > /tmp/adb-wallet.yaml
 mv -- /tmp/adb-wallet.yaml $yaml_dst_location
 
+sed -e "s|%VOLUME_OCID%|$volume_ocid|g" $yaml_dst_location > /tmp/adb-wallet.yaml
+mv -- /tmp/adb-wallet.yaml $yaml_dst_location
