@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: update-has-deposits
+      author: bankauser-dev
+      changes:
+        - sql:
+            splitStatements: false
+            sql: |
+              UPDATE ACCOUNTS A
+              SET HAS_DEPOSITS = 1
+              WHERE EXISTS (
+                  SELECT 1 FROM DEPOSITS D
+                  WHERE D.ACCOUNTID = A.ACCOUNTID
+              );
+      rollback: |
+        UPDATE ACCOUNTS
+        SET HAS_DEPOSITS = 0
+        WHERE HAS_DEPOSITS = 1;

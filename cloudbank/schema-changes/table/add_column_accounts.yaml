@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-column-accounts
+      author: bankauser-dev
+      changes:
+        - addColumn:
+            tableName: ACCOUNTS
+            columns:
+              - column:
+                  name: HAS_DEPOSITS
+                  type: NUMBER(1)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropColumn:
+            columnName: HAS_DEPOSITS
+            tableName: ACCOUNTS
