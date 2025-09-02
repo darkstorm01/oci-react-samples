@@ -46,6 +46,12 @@ pipeline {
                 not {equals expected: 1, actual: params.ref_value.split('/').length}
             }
             stages {
+                stage("Cleanup & Checkout") {
+                    steps {
+                        cleanWs()
+                        checkout scm
+                    }
+                }
                 stage("provision database") {
                     environment {
                         DATABASENAME="${params.ref_value.split("/")[1].toLowerCase()}"
@@ -119,6 +125,12 @@ pipeline {
                 OCIR_HTTP_REGISTRY="https://${REGION_KEY}.ocir.io"
             }
             stages {
+                stage("Cleanup & Checkout") {
+                    steps {
+                        cleanWs()
+                        checkout scm
+                    }
+                }
                 stage("build") {
                     steps {
                         dir("cloudbank/backend-springboot") {

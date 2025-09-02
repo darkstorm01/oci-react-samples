@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: table/create_deposits_table.yaml
+  - include:
+      file: table/insert_into_deposits.yaml
+  - include:
+      file: table/add_column_accounts.yaml
+  - include:
+      file: table/update_column_accounts.yaml
