@@ -96,11 +96,11 @@ pipeline {
                                 script {
                                     sh 'kubectl --type=merge -p \'{\"spec\":{\"loadBalancer\": true}}\' patch singleinstancedatabase $DATABASENAME'
                                 }
-                                // withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
-                                //     dir("$WORKSPACE/cloudbank/sql") {
-                                //         sh('./configure-sidb.sh $DATABASENAME $PASSWORD')
-                                //     }
-                                // }
+                                timeout(15) {
+                                    waitUntil {
+                                        is_database_ready("$DATABASENAME")
+                                    }
+                                }
                             }
                         }
                     }
@@ -147,6 +147,90 @@ pipeline {
                                 sh 'docker push ${APP_IMAGE}'
                                 sh 'docker rmi ${APP_IMAGE}'
                             }
+                        }
+                    }
+                }
+                stage("apply db schema changes") {
+                    steps {
+                        withCredentials([file(credentialsId: 'cbworkshop-prod-adb-wallet', variable: 'WALLET')]) {
+                        withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
+                        withCredentials([string(credentialsId: 'cbworkshop-prod-adb-dbname', variable: 'DBNAME')]) {
+                            dir("$WORKSPACE/cloudbank/schema-changes") {
+                                sh("./apply-schema-changes.sh ${WALLET} ${PASSWORD} ${DBNAME}_tp ${RELEASE_VERSION}")
+                            }
+                        }
+                        }
+                        }
+                    }
+                }
+                stage("deploy") {
+                    steps {
+                        withKubeCredentials(kubectlCredentials: [[
+                            caCertificate: '',
+                            clusterName: env.CLUSTER_NAME,
+                            contextName: '',
+                            credentialsId: "cbworkshop-kubectl-token",
+                            namespace: env.CLUSTER_NAMESPACE,
+                            serverUrl: env.CLUSTER_SERVER_URL
+                            ]]) {
+                                sh('kubectl set image deployment/banka-springboot bank=${APP_IMAGE} -n cloudbank-prod')
+                                sh('kubectl set image deployment/bankb-springboot bank=${APP_IMAGE} -n cloudbank-prod')
+                        }
+                    }
+                }
+                stage("notify") {
+                    steps {
+                        echo "Done! TEST environment ready!"
+                    }
+                }    
+            }
+        }
+        stage('create-pre-release-branch') {
+            when {
+                expression { params.ref_value ==~ /^prerelease\/\d+\.\d+(\.\w+)*$/ }
+                expression { return params.ref_type == "branch" && params.x_github_event == "create" }
+            }
+            environment {
+                RELEASE_VERSION="${params.ref_value.split("/")[1]}"
+                APP_IMAGE="${DOCKER_REGISTRY}:${RELEASE_VERSION}"
+                OCIR_HTTP_REGISTRY="https://${REGION_KEY}.ocir.io"
+            }
+            stages {
+                stage("Cleanup & Checkout") {
+                    steps {
+                        cleanWs()
+                        checkout scm
+                    }
+                }
+                stage("build") {
+                    steps {
+                        dir("cloudbank/backend-springboot") {
+                            sh "mvn clean package"
+                            sh 'docker build -t ${APP_IMAGE} .'
+                        }
+                    }
+
+                }
+                stage("push") {
+                    steps{
+                        dir("cloudbank/backend-springboot") {
+                            withDockerRegistry(credentialsId: 'cbworkshop_ocir_credentials_id', url: OCIR_HTTP_REGISTRY) {
+                                sh 'docker push ${APP_IMAGE}'
+                                sh 'docker rmi ${APP_IMAGE}'
+                            }
+                        }
+                    }
+                }
+                stage("apply db schema changes") {
+                    steps {
+                        withCredentials([file(credentialsId: 'cbworkshop-pre-prod-adb-wallet', variable: 'WALLET')]) {
+                        withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
+                        withCredentials([string(credentialsId: 'cbworkshop-pre-prod-adb-dbname', variable: 'DBNAME')]) {
+                            dir("$WORKSPACE/cloudbank/schema-changes") {
+                                sh("./apply-schema-changes.sh ${WALLET} ${PASSWORD} ${DBNAME}_tp ${RELEASE_VERSION}")
+                            }
+                        }
+                        }
                         }
                     }
                 }
