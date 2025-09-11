@@ -35,7 +35,7 @@ pipeline {
             printPostContent: false,
             silentResponse: false,
             regexpFilterText: '$ref_value',
-            regexpFilterExpression: '(^feature/([a-z0-9]+)(/\\w+)*|^release/[0-9]+.[0-9]+|^prerelease/[0-9]+.[0-9]+(.\w+)*)'
+            regexpFilterExpression: '(^feature/([a-z0-9]+)(/\\w+)*|^release/[0-9]+.[0-9]+|^prerelease/[0-9]+.[0-9]+(.\\w+)*)'
         )
     }
     stages {
