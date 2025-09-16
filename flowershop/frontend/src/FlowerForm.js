@@ -41,7 +41,7 @@ function FlowerForm() {
 
   return (
     <div className="page">
-      <h2>Create Flower</h2>
+      <h2>Add Flower</h2>
       {error && <div className="error">{error}</div>}
       <form className="flower-form" onSubmit={handleSubmit}>
         <label>Name *</label>

@@ -37,7 +37,7 @@ function FruitList() {
     <div className="page">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>All Fruits</h2>
-        <button className="button" onClick={() => navigate("/fruits/create")}>Create Fruit</button>
+        <button className="button" onClick={() => navigate("/fruits/create")}>Add Fruit</button>
       </div>
       {message && <div className="message">{message}</div>}
       {loading ? (

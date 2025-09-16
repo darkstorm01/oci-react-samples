@@ -37,7 +37,7 @@ function FlowerList() {
     <div className="page">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>All Flowers</h2>
-        <button className="button" onClick={() => navigate("/create")}>Create Flower</button>
+        <button className="button" onClick={() => navigate("/create")}>Add Flower</button>
       </div>
       {message && <div className="message">{message}</div>}
       {loading ? (
