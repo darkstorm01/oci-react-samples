@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-fruits-data
+      author: flowershop-dev
+      changes:
+        - insert:
+            tableName: FRUITS
+            columns:
+              - column:
+                  name: NAME
+                  value: Apple
+              - column:
+                  name: COLOR
+                  value: Red
+              - column:
+                  name: DESCRIPTION
+                  value: Crisp and sweet classic fruit
+              - column:
+                  name: PRICE
+                  valueNumeric: 1.25
+        - insert:
+            tableName: FRUITS
+            columns:
+              - column:
+                  name: NAME
+                  value: Banana
+              - column:
+                  name: COLOR
+                  value: Yellow
+              - column:
+                  name: DESCRIPTION
+                  value: Rich in potassium and energy
+              - column:
+                  name: PRICE
+                  valueNumeric: 0.89
+        - insert:
+            tableName: FRUITS
+            columns:
+              - column:
+                  name: NAME
+                  value: Orange
+              - column:
+                  name: COLOR
+                  value: Orange
+              - column:
+                  name: DESCRIPTION
+                  value: Juicy and loaded with vitamin C
+              - column:
+                  name: PRICE
+                  valueNumeric: 1.10
+      rollback: |
+        DELETE FROM FRUITS;

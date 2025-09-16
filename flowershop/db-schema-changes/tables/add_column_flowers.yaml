@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-column-flowers
+      author: flowershop-dev
+      changes:
+        - addColumn:
+            tableName: FLOWERS
+            columns:
+              - column:
+                  name: PRICE
+                  type: NUMBER(5,2)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropColumn:
+            columnName: PRICE
+            tableName: FLOWERS

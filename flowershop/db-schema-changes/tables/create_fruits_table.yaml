@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-fruits-table
+      author: flowershop-dev
+      changes:
+        - createTable:
+            tableName: FRUITS
+            columns:
+              - column:
+                  name: ID
+                  type: NUMBER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: NAME
+                  type: VARCHAR2(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: COLOR
+                  type: VARCHAR2(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: DESCRIPTION
+                  type: VARCHAR2(255)
+              - column:
+                  name: PRICE
+                  type: NUMBER(5,2)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: FRUITS
