@@ -1,0 +1,134 @@
+body {
+  background: #f9fbfd;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 14px;
+  box-shadow: 0 3px 20px rgba(0,0,0,0.12);
+}
+nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 32px;
+  padding-bottom: 10px;
+}
+nav h1 {
+  font-size: 2em;
+  margin: 0;
+}
+.nav-links a {
+  margin-right: 18px;
+  text-decoration: none;
+  color: #6558f5;
+  font-weight: bold;
+}
+.nav-links a:last-child {
+  margin-right: 0;
+}
+.nav-links a:hover {
+  text-decoration: underline;
+}
+.page {
+  margin-top: 15px;
+}
+.flower-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #f0f4fc;
+}
+.flower-table th, .flower-table td {
+  padding: 12px 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.flower-table th {
+  background: #6558f5;
+  color: #fff;
+}
+.button {
+  background: #6558f5;
+  border: none;
+  color: #fff;
+  padding: 6px 14px;
+  margin: 2px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.17s;
+}
+.button.edit {
+  background: #27936b;
+}
+.button.delete {
+  background: #d13a2f;
+}
+.button:hover {
+  filter: brightness(1.1);
+}
+.flower-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  gap: 16px;
+}
+.flower-form input, .flower-form textarea {
+  padding: 7px;
+  border: 1px solid #ccd3e3;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.flower-form textarea {
+  resize: vertical;
+  min-height: 55px;
+}
+.error, .message {
+  background: #ffeaea;
+  color: #d13a2f;
+  padding: 10px 15px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: 1px solid #ffdada;
+}
+.message {
+  background: #eaffea;
+  color: #299c3f;
+  border: 1px solid #c1eedc;
+}
+
+.login-container {
+  max-width: 340px;
+  margin: 90px auto 0;
+  background: #fff;
+  padding: 2em 2em 1.3em;
+  border-radius: 14px;
+  box-shadow: 0 3px 16px rgba(0,0,0,0.13);
+  text-align: center;
+}
+.login-form input {
+  width: 90%;
+  margin: 8px 0;
+  padding: 7px;
+  font-size: 1.12em;
+  border: 1px solid #e4e8ee;
+  border-radius: 5px;
+}
+.login-form button {
+  width: 100%;
+  margin-top: 12px;
+}
+.error {
+  background: #ffeaea;
+  color: #d13a2f;
+  margin-bottom: 10px;
+  padding: 7px;
+  border-radius: 4px;
+}
