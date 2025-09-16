@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: tables/create_fruits_table.yaml
+  - include:
+      file: tables/insert_into_fruits.yaml
+  - include:
+      file: tables/add_column_flowers.yaml
+  - include:
+      file: tables/update_column_flowers.yaml

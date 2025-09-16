@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: update-price
+      author: flowershop-dev
+      changes:
+        - sql:
+            splitStatements: false
+            sql: |
+              UPDATE FLOWERS 
+              SET PRICE = 5;
+      rollback: |
+        UPDATE FLOWERS
+        SET PRICE = 0;
