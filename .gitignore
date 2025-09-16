@@ -49,3 +49,7 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 .idea
+
+*.env
+flowershop/backend/target/
+flowershop/frontend/node_modules/
