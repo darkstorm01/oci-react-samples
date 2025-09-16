@@ -52,3 +52,4 @@ frontend/yarn-error.log*
 
 *.env
 flowershop/backend/target/
+flowershop/frontend/node_modules/

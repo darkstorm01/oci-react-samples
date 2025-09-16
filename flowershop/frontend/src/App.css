@@ -132,3 +132,32 @@ nav h1 {
   padding: 7px;
   border-radius: 4px;
 }
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  background: #e4defc;
+  color: #6558f5;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 9px 9px 0 0;
+  text-decoration: none;
+  font-size: 1.12em;
+  font-weight: 500;
+  transition: background 0.18s, color 0.18s;
+}
+
+.tab-active, .tab:hover {
+  background: #6558f5;
+  color: #fff;
+}
+
+.centered {
+  text-align: center;
+  padding: 60px 0 0;
+  color: #333;
+}

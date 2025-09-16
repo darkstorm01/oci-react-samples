@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "./api";
 
 function FlowerList() {
   const [flowers, setFlowers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFlowers();
@@ -34,7 +35,10 @@ function FlowerList() {
 
   return (
     <div className="page">
-      <h2>All Flowers</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>All Flowers</h2>
+        <button className="button" onClick={() => navigate("/create")}>Create Flower</button>
+      </div>
       {message && <div className="message">{message}</div>}
       {loading ? (
         <div>Loading...</div>
@@ -48,6 +52,7 @@ function FlowerList() {
               <th>Name</th>
               <th>Color</th>
               <th>Description</th>
+              {/* <th>Price</th> */}
               <th>Actions</th>
             </tr>
           </thead>
@@ -58,6 +63,7 @@ function FlowerList() {
                 <td>{flower.name}</td>
                 <td>{flower.color}</td>
                 <td>{flower.description}</td>
+                {/* <td>{flower.price}</td> */}
                 <td>
                   <Link className="button edit" to={`/edit/${flower.id}`}>Edit</Link>
                   <button className="button delete" onClick={() => deleteFlower(flower.id)}>Delete</button>
