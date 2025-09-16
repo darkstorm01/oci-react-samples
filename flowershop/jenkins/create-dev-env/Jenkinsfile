@@ -10,8 +10,8 @@ pipeline {
         REGION_KEY=credentials("cbworkshop-region-key")
         TENANCY_NAMESPACE=credentials("cbworkshop-tenancy-namespace")
         LAB_UNIQUE_ID=credentials("cbworkshop-unique-id")
-        FRONTEND_DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/cloudbank/${LAB_UNIQUE_ID}/frontend"
-        BACKEND_DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/cloudbank/${LAB_UNIQUE_ID}/backend"
+        FRONTEND_DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/flowershop/${LAB_UNIQUE_ID}/frontend"
+        BACKEND_DOCKER_REGISTRY="${REGION_KEY}.ocir.io/${TENANCY_NAMESPACE}/flowershop/${LAB_UNIQUE_ID}/backend"
     }
     parameters {
         string(name: 'ref_value', defaultValue: '', description: 'Payload ref')
@@ -137,11 +137,15 @@ pipeline {
                     steps {
                         dir("flowershop/backend") {
                             sh "mvn clean package"
-                            sh 'docker build -t ${BACKEND_APP_IMAGE} .'
+                            sh "docker build -t ${BACKEND_APP_IMAGE} ."
                         }
-                        dir("flowershop/frontend") {
-                            sed "s|%NAMESPACE%|cloudbank|g" nginx.conf.template > nginx.conf
-                            sh 'docker build -t ${FRONTEND_APP_IMAGE} .'
+                        withCredentials([string(credentialsId: 'cbworkshop-react-pass', variable: 'REACT_PASSKEY')]){
+                            dir("flowershop/frontend") {
+                                sh '''
+                                sed "s|%NAMESPACE%|cloudbank-prod|g" nginx.conf.template > nginx.conf
+                                '''
+                                sh "docker build --build-arg APP_PASS=${REACT_PASSKEY} --build-arg APP_USER=flowershopadmin -t ${FRONTEND_APP_IMAGE} ."
+                            }
                         }
                     }
 
@@ -150,14 +154,14 @@ pipeline {
                     steps{
                         dir("flowershop/frontend") {
                             withDockerRegistry(credentialsId: 'cbworkshop_ocir_credentials_id', url: OCIR_HTTP_REGISTRY) {
-                                sh 'docker push ${FRONTEND_APP_IMAGE}'
-                                sh 'docker rmi ${FRONTEND_APP_IMAGE}'
+                                sh "docker push ${FRONTEND_APP_IMAGE}"
+                                sh "docker rmi ${FRONTEND_APP_IMAGE}"
                             }
                         }
                         dir("flowershop/backend") {
                             withDockerRegistry(credentialsId: 'cbworkshop_ocir_credentials_id', url: OCIR_HTTP_REGISTRY) {
-                                sh 'docker push ${BACKEND_APP_IMAGE}'
-                                sh 'docker rmi ${BACKEND_APP_IMAGE}'
+                                sh "docker push ${BACKEND_APP_IMAGE}"
+                                sh "docker rmi ${BACKEND_APP_IMAGE}"
                             }
                         }
                     }
@@ -185,8 +189,8 @@ pipeline {
                             namespace: env.CLUSTER_NAMESPACE,
                             serverUrl: env.CLUSTER_SERVER_URL
                             ]]) {
-                                sh('kubectl set image deployment/flowershop-backend flowershop-backend=${BACKEND_APP_IMAGE} -n cloudbank-prod')
-                                sh('kubectl set image deployment/flowershop-frontend-deployment flowershop-frontend=${FRONTEND_APP_IMAGE} -n cloudbank-prod')
+                                sh("kubectl set image deployment/flowershop-backend flowershop-backend=${BACKEND_APP_IMAGE} -n cloudbank-prod")
+                                sh("kubectl set image deployment/flowershop-frontend-deployment flowershop-frontend=${FRONTEND_APP_IMAGE} -n cloudbank-prod")
                         }
                     }
                 }
@@ -219,11 +223,15 @@ pipeline {
                     steps {
                         dir("flowershop/backend") {
                             sh "mvn clean package"
-                            sh 'docker build -t ${APP_IMAGE} .'
+                            sh "docker build -t ${BACKEND_APP_IMAGE} ."
                         }
-                        dir("flowershop/frontend") {
-                            sed "s|%NAMESPACE%|cloudbank-prod|g" nginx.conf.template > nginx.conf
-                            sh 'docker build -t ${FRONTEND_APP_IMAGE} .'
+                        withCredentials([string(credentialsId: 'cbworkshop-react-pass', variable: 'REACT_PASSKEY')]){
+                            dir("flowershop/frontend") {
+                                sh '''
+                                    sed "s|%NAMESPACE%|cloudbank|g" nginx.conf.template > nginx.conf
+                                '''
+                                sh "docker build --build-arg APP_PASS=${REACT_PASSKEY} --build-arg APP_USER=flowershopadmin -t ${FRONTEND_APP_IMAGE} ."
+                            }
                         }
                     }
 
@@ -232,14 +240,14 @@ pipeline {
                     steps{
                         dir("flowershop/frontend") {
                             withDockerRegistry(credentialsId: 'cbworkshop_ocir_credentials_id', url: OCIR_HTTP_REGISTRY) {
-                                sh 'docker push ${FRONTEND_APP_IMAGE}'
-                                sh 'docker rmi ${FRONTEND_APP_IMAGE}'
+                                sh "docker push ${FRONTEND_APP_IMAGE}"
+                                sh "docker rmi ${FRONTEND_APP_IMAGE}"
                             }
                         }
                         dir("flowershop/backend") {
                             withDockerRegistry(credentialsId: 'cbworkshop_ocir_credentials_id', url: OCIR_HTTP_REGISTRY) {
-                                sh 'docker push ${BACKEND_APP_IMAGE}'
-                                sh 'docker rmi ${BACKEND_APP_IMAGE}'
+                                sh "docker push ${BACKEND_APP_IMAGE}"
+                                sh "docker rmi ${BACKEND_APP_IMAGE}"
                             }
                         }
                     }
@@ -249,7 +257,7 @@ pipeline {
                         withCredentials([file(credentialsId: 'cbworkshop-pre-prod-adb-wallet', variable: 'WALLET')]) {
                         withCredentials([string(credentialsId: 'cbworkshop-default-db-password', variable: 'PASSWORD')]) {
                         withCredentials([string(credentialsId: 'cbworkshop-pre-prod-adb-dbname', variable: 'DBNAME')]) {
-                            dir("$WORKSPACE/cloudbank/schema-changes") {
+                            dir("$WORKSPACE/flowershop/db-schema-changes") {
                                 sh("./apply-schema-changes.sh ${WALLET} ${PASSWORD} ${DBNAME}_tp ${RELEASE_VERSION}")
                             }
                         }
@@ -267,8 +275,8 @@ pipeline {
                             namespace: env.CLUSTER_NAMESPACE,
                             serverUrl: env.CLUSTER_SERVER_URL
                             ]]) {
-                                sh('kubectl set image deployment/flowershop-backend flowershop-backend=${BACKEND_APP_IMAGE} -n cloudbank')
-                                sh('kubectl set image deployment/flowershop-frontend-deployment flowershop-frontend=${FRONTEND_APP_IMAGE} -n cloudbank')
+                                sh("kubectl set image deployment/flowershop-backend flowershop-backend=${BACKEND_APP_IMAGE} -n cloudbank")
+                                sh("kubectl set image deployment/flowershop-frontend-deployment flowershop-frontend=${FRONTEND_APP_IMAGE} -n cloudbank")
                         }
                     }
                 }

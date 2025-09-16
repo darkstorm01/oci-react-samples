@@ -1,4 +1,11 @@
 FROM node:18-alpine as build
+
+ARG APP_USER
+ARG APP_PASS
+
+ENV REACT_APP_STATIC_USER=$APP_USER
+ENV REACT_APP_STATIC_PASS=$APP_PASS
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
