@@ -52,7 +52,7 @@ function FlowerList() {
               <th>Name</th>
               <th>Color</th>
               <th>Description</th>
-              {/* <th>Price</th> */}
+              <th>Price</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -63,7 +63,7 @@ function FlowerList() {
                 <td>{flower.name}</td>
                 <td>{flower.color}</td>
                 <td>{flower.description}</td>
-                {/* <td>{flower.price}</td> */}
+                <td>{flower.price}</td>
                 <td>
                   <Link className="button edit" to={`/edit/${flower.id}`}>Edit</Link>
                   <button className="button delete" onClick={() => deleteFlower(flower.id)}>Delete</button>

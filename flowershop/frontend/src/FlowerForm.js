@@ -7,8 +7,8 @@ function FlowerForm() {
   const [flower, setFlower] = useState({
     name: "",
     color: "",
-    description: ""
-    // price: ""
+    description: "",
+    price: ""
   });
   const [error, setError] = useState(null);
 
@@ -22,15 +22,15 @@ function FlowerForm() {
       setError("Name is required.");
       return;
     }
-    // if (!flower.price) {
-    //   setError("Price is required.");
-    //   return;
-    // }
+    if (!flower.price) {
+      setError("Price is required.");
+      return;
+    }
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(flower)
-      //body: JSON.stringify({ ...flower, price: parseFloat(flower.price) })
+      // body: JSON.stringify(flower)
+      body: JSON.stringify({ ...flower, price: parseFloat(flower.price) })
     })
       .then(res => {
         if (res.ok) navigate("/");
@@ -50,8 +50,8 @@ function FlowerForm() {
         <input name="color" value={flower.color} onChange={handleChange} />
         <label>Description</label>
         <textarea name="description" value={flower.description} onChange={handleChange} />
-        {/* <label>Price *</label> */}
-        {/* <input name="price" type="number" step="0.01" value={fruit.price} onChange={handleChange} required /> */}
+        <label>Price *</label>
+        <input name="price" type="number" step="0.01" value={flower.price} onChange={handleChange} required />
         <button className="button" type="submit">Create</button>
       </form>
     </div>
