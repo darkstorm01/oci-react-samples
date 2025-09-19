@@ -7,9 +7,9 @@ import Login from "./Login";
 import "./App.css";
 
 // Uncomment these lines to enable full Fruits CRUD
-// import FruitList from "./FruitList";
-// import FruitForm from "./FruitForm";
-// import FruitEdit from "./FruitEdit";
+import FruitList from "./FruitList";
+import FruitForm from "./FruitForm";
+import FruitEdit from "./FruitEdit";
 
 
 function Tabs() {
@@ -58,13 +58,11 @@ function App() {
           <Route path="/create" element={<FlowerForm />} />
           <Route path="/edit/:id" element={<FlowerEdit />} />
           {/* Fruits Placeholder */}
-          <Route path="/fruits" element={<FruitsPlaceholder />} />
+          {/* <Route path="/fruits" element={<FruitsPlaceholder />} /> */}
 
-          {/*
           <Route path="/fruits" element={<FruitList />} />
           <Route path="/fruits/create" element={<FruitForm />} />
           <Route path="/fruits/edit/:id" element={<FruitEdit />} />
-          */}
         </Routes>
       </div>
     </Router>

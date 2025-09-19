@@ -29,7 +29,7 @@ public class FlowerService {
             existing.setName(flowerDetails.getName());
             existing.setColor(flowerDetails.getColor());
             existing.setDescription(flowerDetails.getDescription());
-            // existing.setPrice(flowerDetails.getPrice());
+            existing.setPrice(flowerDetails.getPrice());
             return repo.save(existing);
         });
     }

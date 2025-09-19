@@ -13,8 +13,8 @@ public class Flower {
     private String name;
     private String color;
     private String description;
-    // @Column(nullable = false)
-    // private Double price;
+    @Column(nullable = false)
+    private Double price;
 
     public Flower() {}
 
@@ -24,12 +24,12 @@ public class Flower {
         this.description = description;
     }
 
-    // public Flower(String name, String color, String description, Double price) {
-    //     this.name = name;
-    //     this.color = color;
-    //     this.description = description;
-    //     this.price = price;
-    // }
+    public Flower(String name, String color, String description, Double price) {
+        this.name = name;
+        this.color = color;
+        this.description = description;
+        this.price = price;
+    }
 
     // Getters and setters
     public Long getId() { return id; }
@@ -40,6 +40,6 @@ public class Flower {
     public void setColor(String color) { this.color = color; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    // public Double getPrice() { return price; }
-    // public void setPrice(Double price) { this.price = price; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 }
